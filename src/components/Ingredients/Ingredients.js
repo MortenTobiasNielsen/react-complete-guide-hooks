@@ -23,13 +23,13 @@ const ingredientReducer = (currentIngredients, action) => {
 const httpReducer = (httpState, action) => {
   switch (action.type) {
     case ("SEND"):
-      return {...httpState, isLoading: true, error: null};
+      return {isLoading: true, error: null};
 
     case ("RESPONSE"):
       return {...httpState, isLoading: false};
 
     case ("ERROR"):
-      return {...httpState, isLoading: false, error: action.errorMessage};
+      return {isLoading: false, error: action.errorMessage};
 
     case ("CLEAR"):
       return {...httpState, error: null};
@@ -47,7 +47,7 @@ const Ingredients = () => {
     dispatchIngredients({type: "SET", ingredients: filteredIngredients});
   }, []);
 
-  const addIngredientHandler = ingredient => {
+  const addIngredientHandler = useCallback(ingredient => {
     dispatchHttp({type: "SEND"});
 
     fetch("https://react-hooks-project-95b9d-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json", {
@@ -68,9 +68,9 @@ const Ingredients = () => {
     .catch(error => {
       dispatchHttp({type: "ERROR", errorMessage: error.message});
     });
-  };
+  }, []);
 
-  const removeIngredientHandler = id => {
+  const removeIngredientHandler = useCallback(id => {
     dispatchHttp({type: "SEND"});
     
     fetch(`https://react-hooks-project-95b9d-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${id}.json`, {
@@ -83,11 +83,11 @@ const Ingredients = () => {
     .catch(error => {
       dispatchHttp({type: "ERROR", errorMessage: error.message});
     });
-  };
+  }, []);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatchHttp({type: "CLEAR"});
-  }
+  }, []);
 
   return (
     <div className="App">
@@ -100,7 +100,7 @@ const Ingredients = () => {
 
       <section>
         <Search onLoadIngredients={filteredIngredientsHandler}/>
-        <IngredientList ingredients={ingredients} onRemoveItem={(id) => removeIngredientHandler(id)}/>
+        <IngredientList ingredients={ingredients} onRemoveItem={removeIngredientHandler}/>
       </section>
     </div>
   );
