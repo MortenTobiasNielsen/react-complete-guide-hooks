@@ -30,9 +30,14 @@ const Ingredients = () => {
   };
 
   const removeIngredientHandler = id => {
-    setIngredients(prevIngredients => 
-      prevIngredients.filter(ingredient => ingredient.id !== id)
-    );
+    fetch(`https://react-hooks-project-95b9d-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${id}.json`, {
+      method: "DELETE",
+    })
+    .then(response => {
+      setIngredients(prevIngredients => 
+        prevIngredients.filter(ingredient => ingredient.id !== id)
+      );
+    });
   };
 
   return (
@@ -45,6 +50,6 @@ const Ingredients = () => {
       </section>
     </div>
   );
-}
+};
 
 export default Ingredients;
