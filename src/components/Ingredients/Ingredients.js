@@ -9,9 +9,19 @@ const Ingredients = () => {
   const [ingredients, setIngredients] = useState([]);
   
   const addIngredientHandler = ingredient => {
-    setIngredients(prevIngredients => [
-      ...prevIngredients, updateObject(ingredient, {id: Math.random().toString()})
-    ]);
+    fetch("https://react-hooks-project-95b9d-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json", {
+      method: "POST",
+      body: JSON.stringify({ingredient}),
+      headers: {"content-Type": "application/json"}
+    })
+    .then(response => {
+      return response.json();
+    })
+    .then(responseData => {
+      setIngredients(prevIngredients => [
+        ...prevIngredients, updateObject(ingredient, {id: responseData.name})
+      ]);
+    });
   };
 
   const removeIngredientHandler = id => {
