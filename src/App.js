@@ -1,16 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import Counter from './containers/Counter/Counter';
-import './App.css';
+import Ingredients from './components/Ingredients/Ingredients';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-       <Counter />
-      </div>
-    );
-  }
-}
+const App = props => {
+  return <Ingredients />;
+};
 
 export default App;
